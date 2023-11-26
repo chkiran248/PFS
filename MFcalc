@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ffcc00, #ff3366, #00ccff);
+            background-size: 600% 600%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        #calculator {
+            background-color: #ecf0f3;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 10px 10px 25px #bdc3c7, -10px -10px 25px #ffffff;
+            transition: transform 0.3s;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #calculator:focus {
+            transform: scale(0.98);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #34495e;
+        }
+
+        input {
+            width: calc(100% - 16px);
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #27ae60;
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+
+        #icon {
+            font-size: 48px;
+            color: #2c3e50;
+        }
+
+        #result {
+            text-align: left;
+            margin-top: 20px;
+        }
+    </style>
+    <title>Mutual Funds Returns Calculator</title>
+</head>
+<body>
+    <div id="calculator" tabindex="0">
+        <i id="icon" class="fas fa-coins"></i>
+        <h2>Mutual Funds Returns Calculator</h2>
+        <label for="investment">Monthly Investment (₹):</label>
+        <input type="number" id="investment" placeholder="Enter monthly investment">
+
+        <label for="rate">Expected Annual Return (%):</label>
+        <input type="number" id="rate" placeholder="Enter expected annual return">
+
+        <label for="years">Investment Duration (Years):</label>
+        <input type="number" id="years" placeholder="Enter investment duration">
+
+        <button onclick="calculateSIP()">Calculate</button>
+
+        <div id="result">
+            <p>Total Invested Amount: ₹<span id="investedAmount"></span></p>
+            <p>Estimated Returns: ₹<span id="estimatedReturns"></span></p>
+            <p>Total Value: ₹<span id="totalValue"></span></p>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit-id.js" crossorigin="anonymous"></script>
+    <script>
+        function calculateSIP() {
+            const investment = parseInt(document.getElementById('investment').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const years = parseInt(document.getElementById('years').value);
+
+            const monthlyRate = rate / 12;
+            const totalMonths = years * 12;
+
+            let futureValue = 0;
+            let totalInvestedAmount = 0;
+
+            for (let i = 1; i <= totalMonths; i++) {
+                futureValue += investment * Math.pow(1 + monthlyRate, i);
+                totalInvestedAmount += investment;
+            }
+
+            const estimatedReturns = futureValue - totalInvestedAmount;
+            const totalValue = futureValue;
+
+            document.getElementById('investedAmount').textContent = Math.round(totalInvestedAmount);
+            document.getElementById('estimatedReturns').textContent = Math.round(estimatedReturns);
+            document.getElementById('totalValue').textContent = Math.round(totalValue);
+        }
+    </script>
+</body>
+</html>
